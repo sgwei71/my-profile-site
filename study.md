@@ -2,3 +2,9 @@
 1. Git 저장소를 초기화 해줘
 2. .gitignore파일을 만들어서 불필요한 파일은 제외
 3. 모든 파일을 스테이징하고 "initial commit: Add profile website" 메시지로 커밋 해줘
+
+
+Github 저장소에 푸시하고 싶어.
+원격 저장소 URL주소는 https://github.com/sgwei71/my-profile-site.git 이야
+1. 원격 저장소를 추가해줘
+2. main 브랜치로 푸시해줘

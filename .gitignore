@@ -28,3 +28,6 @@ out/
 # Cache
 .cache/
 *.log
+
+#local file
+./claude/settings.local.json
