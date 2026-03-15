@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>위성규 | IT Architect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Noto Sans KR', 'sans-serif'] },
+          colors: {
+            base: '#0D0D1A',
+            surface: '#111827',
+            card: '#1a2235',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { background-color: #0D0D1A; font-family: 'Noto Sans KR', sans-serif; }
+
+    /* 히어로 그라데이션 배경 */
+    .hero-bg {
+      background: linear-gradient(135deg, #0D0D1A 0%, #1a1040 40%, #0a2040 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      border-radius: 50%;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 70%);
+      bottom: -80px; left: -80px;
+      border-radius: 50%;
+    }
+
+    /* 텍스트 그라데이션 */
+    .gradient-text {
+      background: linear-gradient(135deg, #3B82F6, #8B5CF6, #10B981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* 네비게이션 */
+    .nav-scrolled {
+      background: rgba(13, 13, 26, 0.85) !important;
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    /* 스크롤 애니메이션 */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 타임라인 */
+    .timeline-line {
+      background: linear-gradient(180deg, #3B82F6, #8B5CF6, #10B981);
+    }
+
+    /* 카드 호버 */
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+    }
+
+    /* 스킬 태그 */
+    .skill-tag {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin: 4px;
+      border: 1px solid;
+      transition: transform 0.2s;
+    }
+    .skill-tag:hover { transform: scale(1.05); }
+    .tag-blue  { background: rgba(59,130,246,0.12); color: #93C5FD; border-color: rgba(59,130,246,0.3); }
+    .tag-violet{ background: rgba(139,92,246,0.12); color: #C4B5FD; border-color: rgba(139,92,246,0.3); }
+    .tag-green { background: rgba(16,185,129,0.12); color: #6EE7B7; border-color: rgba(16,185,129,0.3); }
+
+    /* 섹션 구분선 */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(139,92,246,0.4), transparent);
+    }
+
+    /* 모바일 메뉴 */
+    #mobile-menu { transition: max-height 0.3s ease, opacity 0.3s ease; }
+
+    /* 프로젝트 카드 border 그라데이션 */
+    .project-card {
+      position: relative;
+      background: #1a2235;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.5), rgba(139,92,246,0.5), rgba(16,185,129,0.3));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="text-gray-100">
+
+  <!-- ======================== NAVIGATION ======================== -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <!-- 로고 -->
+      <a href="#hero" class="text-xl font-bold gradient-text">위성규</a>
+
+      <!-- 데스크탑 메뉴 -->
+      <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+        <li><a href="#about"    class="hover:text-blue-400 transition-colors">About</a></li>
+        <li><a href="#skills"   class="hover:text-violet-400 transition-colors">Skills</a></li>
+        <li><a href="#career"   class="hover:text-blue-400 transition-colors">Career</a></li>
+        <li><a href="#projects" class="hover:text-emerald-400 transition-colors">Projects</a></li>
+        <li><a href="#contact"  class="hover:text-violet-400 transition-colors">Contact</a></li>
+        <li>
+          <a href="https://github.com/sgwei71" target="_blank"
+            class="px-4 py-2 rounded-full border border-violet-500 text-violet-300 hover:bg-violet-500 hover:text-white transition-all text-sm">
+            <i class="fa-brands fa-github mr-1"></i>GitHub
+          </a>
+        </li>
+      </ul>
+
+      <!-- 모바일 햄버거 -->
+      <button id="menu-toggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+        <i id="menu-icon" class="fa-solid fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <!-- 모바일 메뉴 드롭다운 -->
+    <div id="mobile-menu" class="md:hidden hidden bg-[#0D0D1A] border-t border-gray-800 px-6 py-4">
+      <ul class="flex flex-col gap-4 text-sm font-medium text-gray-300">
+        <li><a href="#about"    class="block hover:text-blue-400 transition-colors" onclick="closeMenu()">About</a></li>
+        <li><a href="#skills"   class="block hover:text-violet-400 transition-colors" onclick="closeMenu()">Skills</a></li>
+        <li><a href="#career"   class="block hover:text-blue-400 transition-colors" onclick="closeMenu()">Career</a></li>
+        <li><a href="#projects" class="block hover:text-emerald-400 transition-colors" onclick="closeMenu()">Projects</a></li>
+        <li><a href="#contact"  class="block hover:text-violet-400 transition-colors" onclick="closeMenu()">Contact</a></li>
+        <li><a href="https://github.com/sgwei71" target="_blank" class="block text-violet-300 hover:text-violet-100 transition-colors"><i class="fa-brands fa-github mr-1"></i>GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ======================== HERO ======================== -->
+  <section id="hero" class="hero-bg min-h-screen flex items-center justify-center pt-20">
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <!-- 배지 -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-sm mb-8">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        IBK 기업은행 · IT 아키텍트 부장
+      </div>
+
+      <!-- 이름 -->
+      <h1 class="text-6xl md:text-8xl font-black mb-4 leading-none">
+        <span class="gradient-text">위성규</span>
+      </h1>
+      <p class="text-2xl md:text-3xl font-light text-gray-300 mb-4">
+        Sunggyu Wi
+      </p>
+
+      <!-- 소개 -->
+      <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-xl mx-auto">
+        하고싶은게 많은 중년 아저씨 👨‍💻<br/>
+        <span class="text-gray-500 text-base">23년 경력의 금융 IT 아키텍트</span>
+      </p>
+
+      <!-- CTA 버튼 -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#career"
+          class="px-8 py-3 rounded-full bg-gradient-to-r from-blue-600 via-violet-600 to-emerald-500 text-white font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-violet-500/30">
+          경력 보기 <i class="fa-solid fa-arrow-down ml-2"></i>
+        </a>
+        <a href="https://github.com/sgwei71" target="_blank"
+          class="px-8 py-3 rounded-full border border-gray-600 text-gray-300 hover:border-gray-400 hover:text-white transition-all">
+          <i class="fa-brands fa-github mr-2"></i>GitHub
+        </a>
+      </div>
+
+      <!-- 스크롤 인디케이터 -->
+      <div class="mt-20 animate-bounce">
+        <i class="fa-solid fa-chevron-down text-gray-600 text-xl"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== ABOUT ======================== -->
+  <section id="about" class="py-24 bg-surface">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-divider mb-16"></div>
+
+      <div class="fade-up text-center mb-16">
+        <span class="text-sm font-semibold text-violet-400 tracking-widest uppercase">About Me</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">소개</h2>
+      </div>
+
+      <div class="fade-up grid md:grid-cols-2 gap-12 items-center">
+        <!-- 텍스트 -->
+        <div>
+          <p class="text-gray-300 text-lg leading-relaxed mb-6">
+            안녕하세요! <span class="text-blue-400 font-semibold">IBK 기업은행</span>에서 IT 아키텍트 부장으로 근무 중인 위성규입니다.
+          </p>
+          <p class="text-gray-400 leading-relaxed mb-6">
+            IBM Korea에서 시작해 IBK 기업은행까지, 23년 이상의 금융 IT 경력을 보유하고 있습니다.
+            코어 뱅킹 아키텍처부터 클라우드 혁신, 데이터센터 이전까지 금융 IT의 다양한 분야를 경험했습니다.
+          </p>
+          <p class="text-gray-400 leading-relaxed">
+            새로운 기술과 도전을 좋아하는 "하고싶은게 많은 중년 아저씨"로, 언제나 더 나은 시스템과 아키텍처를 고민합니다.
+          </p>
+        </div>
+
+        <!-- 핵심 가치 카드 -->
+        <div class="grid grid-cols-1 gap-4">
+          <div class="card-hover bg-card rounded-2xl p-6 border border-blue-500/20">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center mb-4">
+              <i class="fa-solid fa-building-columns text-blue-400"></i>
+            </div>
+            <h3 class="font-bold text-white mb-1">금융 아키텍처</h3>
+            <p class="text-gray-400 text-sm">코어 뱅킹 시스템부터 엔터프라이즈 아키텍처까지 금융 IT 전반을 설계합니다.</p>
+          </div>
+          <div class="card-hover bg-card rounded-2xl p-6 border border-violet-500/20">
+            <div class="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
+              <i class="fa-solid fa-cloud text-violet-400"></i>
+            </div>
+            <h3 class="font-bold text-white mb-1">클라우드 혁신</h3>
+            <p class="text-gray-400 text-sm">금융권 클라우드 전환을 리드하며 디지털 혁신을 추진합니다.</p>
+          </div>
+          <div class="card-hover bg-card rounded-2xl p-6 border border-emerald-500/20">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
+              <i class="fa-solid fa-sitemap text-emerald-400"></i>
+            </div>
+            <h3 class="font-bold text-white mb-1">시스템 설계</h3>
+            <p class="text-gray-400 text-sm">대규모 금융 시스템의 아키텍처를 수립하고 프레임워크를 개발합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== SKILLS ======================== -->
+  <section id="skills" class="py-24 bg-base">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-divider mb-16"></div>
+
+      <div class="fade-up text-center mb-12">
+        <span class="text-sm font-semibold text-blue-400 tracking-widest uppercase">Tech Stack</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">기술 스택</h2>
+      </div>
+
+      <div class="fade-up text-center max-w-3xl mx-auto">
+        <!-- 아키텍처 -->
+        <div class="mb-6">
+          <p class="text-xs text-gray-500 uppercase tracking-widest mb-3">Architecture</p>
+          <div>
+            <span class="skill-tag tag-blue">Enterprise Architecture</span>
+            <span class="skill-tag tag-blue">Core Banking Architecture</span>
+            <span class="skill-tag tag-blue">Software Architecture</span>
+            <span class="skill-tag tag-blue">System Architecture</span>
+            <span class="skill-tag tag-blue">Framework Architecture</span>
+          </div>
+        </div>
+        <!-- 클라우드/인프라 -->
+        <div class="mb-6">
+          <p class="text-xs text-gray-500 uppercase tracking-widest mb-3">Cloud & Infrastructure</p>
+          <div>
+            <span class="skill-tag tag-violet">Cloud Architecture</span>
+            <span class="skill-tag tag-violet">Data Center</span>
+            <span class="skill-tag tag-violet">IT Infrastructure</span>
+            <span class="skill-tag tag-violet">System Migration</span>
+          </div>
+        </div>
+        <!-- 플랫폼/기술 -->
+        <div class="mb-6">
+          <p class="text-xs text-gray-500 uppercase tracking-widest mb-3">Platform & Technology</p>
+          <div>
+            <span class="skill-tag tag-green">IBM WebSphere</span>
+            <span class="skill-tag tag-green">B2B Platform</span>
+            <span class="skill-tag tag-green">Enterprise Service Bus</span>
+            <span class="skill-tag tag-green">Service Oriented Architecture</span>
+          </div>
+        </div>
+        <!-- 관리 -->
+        <div>
+          <p class="text-xs text-gray-500 uppercase tracking-widest mb-3">Management</p>
+          <div>
+            <span class="skill-tag tag-blue">Project Management</span>
+            <span class="skill-tag tag-violet">IT Planning</span>
+            <span class="skill-tag tag-green">Team Leadership</span>
+            <span class="skill-tag tag-blue">Product Design</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CAREER TIMELINE ======================== -->
+  <section id="career" class="py-24 bg-surface">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="section-divider mb-16"></div>
+
+      <div class="fade-up text-center mb-16">
+        <span class="text-sm font-semibold text-emerald-400 tracking-widest uppercase">Experience</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">경력 사항</h2>
+        <p class="text-gray-400 mt-2">총 23년 이상의 금융 IT 경력</p>
+      </div>
+
+      <!-- IBK 기업은행 -->
+      <div class="fade-up mb-12">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-landmark text-blue-400 text-lg"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">IBK 기업은행</h3>
+            <p class="text-gray-400 text-sm">2012년 6월 ~ 현재 · 13년 10개월</p>
+          </div>
+        </div>
+
+        <!-- 타임라인 -->
+        <div class="relative ml-6">
+          <div class="timeline-line absolute left-0 top-0 bottom-0 w-0.5 rounded-full"></div>
+
+          <!-- 항목들 -->
+          <div class="space-y-6 pl-8">
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-blue-500 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-blue-500/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">Deputy Director Of IT Architect Department</h4>
+                  <span class="text-xs text-blue-300 bg-blue-500/10 px-3 py-1 rounded-full whitespace-nowrap">2025.07 ~ 현재</span>
+                </div>
+                <p class="text-gray-400 text-sm">IT 아키텍트 부서 부장 · 대면근무 · 대한민국 서울</p>
+              </div>
+            </div>
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-violet-500 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-violet-500/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">Deputy Director – Hanam Data Center Relocation TF</h4>
+                  <span class="text-xs text-violet-300 bg-violet-500/10 px-3 py-1 rounded-full whitespace-nowrap">2024.01 ~ 2025.07</span>
+                </div>
+                <p class="text-gray-400 text-sm">하남 데이터센터 이전 태스크포스 부팀장 · 1년 7개월</p>
+                <div class="mt-2 flex flex-wrap gap-1">
+                  <span class="skill-tag tag-violet" style="font-size:0.75rem;padding:3px 10px;">금융 아키텍트</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-emerald-500/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">Cloud Innovation Team Lead</h4>
+                  <span class="text-xs text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full whitespace-nowrap">2021.05 ~ 2024.01</span>
+                </div>
+                <p class="text-gray-400 text-sm">클라우드 혁신팀 팀장 · 2년 9개월 · 대한민국 서울</p>
+              </div>
+            </div>
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-blue-400 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-blue-400/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">IT Global Development Team Lead</h4>
+                  <span class="text-xs text-blue-300 bg-blue-500/10 px-3 py-1 rounded-full whitespace-nowrap">2020.08 ~ 2021.07</span>
+                </div>
+                <p class="text-gray-400 text-sm">IT 글로벌 개발팀 팀장 · 1년</p>
+              </div>
+            </div>
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-violet-400 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-violet-400/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">B2B Platform Operations / IBK BOX Platform Management Team Lead</h4>
+                  <span class="text-xs text-violet-300 bg-violet-500/10 px-3 py-1 rounded-full whitespace-nowrap">2019.07 ~ 2020.08</span>
+                </div>
+                <p class="text-gray-400 text-sm">B2B 플랫폼 운영 · IBK BOX 플랫폼 관리팀 팀장 · 1년 2개월 · 서울</p>
+                <div class="mt-2 flex flex-wrap gap-1">
+                  <span class="skill-tag tag-violet" style="font-size:0.75rem;padding:3px 10px;">Platform Architect</span>
+                  <span class="skill-tag tag-blue" style="font-size:0.75rem;padding:3px 10px;">Technical Architect</span>
+                  <span class="skill-tag tag-green" style="font-size:0.75rem;padding:3px 10px;">System Management</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-blue-500 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-blue-500/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">Project Management Team Lead</h4>
+                  <span class="text-xs text-blue-300 bg-blue-500/10 px-3 py-1 rounded-full whitespace-nowrap">2018.07 ~ 2019.07</span>
+                </div>
+                <p class="text-gray-400 text-sm">IT 기획설계부 프로젝트 관리팀 팀장 · 1년 1개월 · 서울</p>
+                <div class="mt-2 flex flex-wrap gap-1">
+                  <span class="skill-tag tag-blue" style="font-size:0.75rem;padding:3px 10px;">Project Management</span>
+                  <span class="skill-tag tag-violet" style="font-size:0.75rem;padding:3px 10px;">Architecture</span>
+                  <span class="skill-tag tag-green" style="font-size:0.75rem;padding:3px 10px;">IT Architect</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-violet-500 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-violet-500/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">Senior Manager – Project Management Team</h4>
+                  <span class="text-xs text-violet-300 bg-violet-500/10 px-3 py-1 rounded-full whitespace-nowrap">2017.07 ~ 2018.07</span>
+                </div>
+                <p class="text-gray-400 text-sm">IT 기획설계부 프로젝트 관리팀 시니어 매니저 · 1년 1개월</p>
+              </div>
+            </div>
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-emerald-500/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">System Operations Manager</h4>
+                  <span class="text-xs text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full whitespace-nowrap">2015.01 ~ 2017.07</span>
+                </div>
+                <p class="text-gray-400 text-sm">시스템 운영 매니저 · 2년 7개월 · 서울</p>
+                <div class="mt-2 flex flex-wrap gap-1">
+                  <span class="skill-tag tag-green" style="font-size:0.75rem;padding:3px 10px;">Banking System Architect</span>
+                  <span class="skill-tag tag-blue" style="font-size:0.75rem;padding:3px 10px;">Core Banking Architect</span>
+                  <span class="skill-tag tag-violet" style="font-size:0.75rem;padding:3px 10px;">IBK Framework</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-blue-500 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-blue-500/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">Senior Software Architect</h4>
+                  <span class="text-xs text-blue-300 bg-blue-500/10 px-3 py-1 rounded-full whitespace-nowrap">2012.06 ~ 2014.12</span>
+                </div>
+                <p class="text-gray-400 text-sm">IBK Post 차세대 프로젝트 · 2년 7개월 · 서울</p>
+                <div class="mt-2 flex flex-wrap gap-1">
+                  <span class="skill-tag tag-blue" style="font-size:0.75rem;padding:3px 10px;">Software Architect</span>
+                  <span class="skill-tag tag-violet" style="font-size:0.75rem;padding:3px 10px;">Core Banking</span>
+                  <span class="skill-tag tag-green" style="font-size:0.75rem;padding:3px 10px;">IBK Framework</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- IBM Korea -->
+      <div class="fade-up">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-12 h-12 rounded-xl bg-violet-500/20 border border-violet-500/40 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-server text-violet-400 text-lg"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">IBM Korea</h3>
+            <p class="text-gray-400 text-sm">2003년 4월 ~ 2012년 5월 · 9년 2개월</p>
+          </div>
+        </div>
+
+        <div class="relative ml-6">
+          <div class="timeline-line absolute left-0 top-0 bottom-0 w-0.5 rounded-full"></div>
+          <div class="space-y-6 pl-8">
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-violet-500 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-violet-500/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">Staff Software Engineer</h4>
+                  <span class="text-xs text-violet-300 bg-violet-500/10 px-3 py-1 rounded-full whitespace-nowrap">2008.06 ~ 2012.05</span>
+                </div>
+                <p class="text-gray-400 text-sm">IBM Korea Software Solution Lab – Finance Solution Center · 4년</p>
+                <div class="mt-2 flex flex-wrap gap-1">
+                  <span class="skill-tag tag-violet" style="font-size:0.75rem;padding:3px 10px;">Finance Solution</span>
+                  <span class="skill-tag tag-blue" style="font-size:0.75rem;padding:3px 10px;">Core Banking Framework</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative fade-up">
+              <div class="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-base"></div>
+              <div class="bg-card rounded-xl p-5 border border-emerald-500/20 card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h4 class="font-bold text-white">Senior Software Engineer</h4>
+                  <span class="text-xs text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full whitespace-nowrap">2003.04 ~ 2008.05</span>
+                </div>
+                <p class="text-gray-400 text-sm">IBM Software Group – WebSphere Team · 5년 2개월 · 서울</p>
+                <div class="mt-2 flex flex-wrap gap-1">
+                  <span class="skill-tag tag-green" style="font-size:0.75rem;padding:3px 10px;">WebSphere</span>
+                  <span class="skill-tag tag-blue" style="font-size:0.75rem;padding:3px 10px;">Enterprise Service Bus</span>
+                  <span class="skill-tag tag-violet" style="font-size:0.75rem;padding:3px 10px;">SOA</span>
+                  <span class="skill-tag tag-green" style="font-size:0.75rem;padding:3px 10px;">WAS</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== PROJECTS ======================== -->
+  <section id="projects" class="py-24 bg-base">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-divider mb-16"></div>
+
+      <div class="fade-up text-center mb-12">
+        <span class="text-sm font-semibold text-blue-400 tracking-widest uppercase">Projects</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">주요 프로젝트</h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <!-- 프로젝트 1 -->
+        <div class="fade-up project-card card-hover">
+          <div class="p-6">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mb-5">
+              <i class="fa-solid fa-database text-blue-400 text-xl"></i>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-xs bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full border border-blue-500/30">2024 ~ 2025</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-3">하남 데이터센터 이전 프로젝트</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-5">
+              IBK 기업은행의 대규모 데이터센터 하남 이전 프로젝트를 부팀장으로 주도. 금융 핵심 시스템의 무중단 이전 및 아키텍처 재설계를 담당.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-tag tag-blue" style="font-size:0.72rem;padding:2px 10px;">데이터센터</span>
+              <span class="skill-tag tag-violet" style="font-size:0.72rem;padding:2px 10px;">IT 아키텍처</span>
+              <span class="skill-tag tag-green" style="font-size:0.72rem;padding:2px 10px;">시스템 이전</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 프로젝트 2 -->
+        <div class="fade-up project-card card-hover">
+          <div class="p-6">
+            <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-5">
+              <i class="fa-solid fa-cloud text-violet-400 text-xl"></i>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-xs bg-violet-500/20 text-violet-300 px-3 py-1 rounded-full border border-violet-500/30">2021 ~ 2024</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-3">Cloud Innovation</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-5">
+              금융권 클라우드 혁신팀 팀장으로서 IBK의 클라우드 전환 전략 수립 및 실행. 금융 규제를 준수하는 클라우드 아키텍처 설계를 리드.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-tag tag-violet" style="font-size:0.72rem;padding:2px 10px;">Cloud Architecture</span>
+              <span class="skill-tag tag-blue" style="font-size:0.72rem;padding:2px 10px;">디지털 혁신</span>
+              <span class="skill-tag tag-green" style="font-size:0.72rem;padding:2px 10px;">팀 리드</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 프로젝트 3 -->
+        <div class="fade-up project-card card-hover">
+          <div class="p-6">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-5">
+              <i class="fa-solid fa-boxes-stacked text-emerald-400 text-xl"></i>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/30">2019 ~ 2021</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-3">IBK BOX B2B Platform</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-5">
+              IBK BOX 기업 금융 플랫폼의 아키텍처 설계 및 제품 디자인 주도. B2B 플랫폼 운영팀 팀장으로 플랫폼 전략 및 기술 방향 수립.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-tag tag-green" style="font-size:0.72rem;padding:2px 10px;">Platform Architect</span>
+              <span class="skill-tag tag-blue" style="font-size:0.72rem;padding:2px 10px;">B2B Platform</span>
+              <span class="skill-tag tag-violet" style="font-size:0.72rem;padding:2px 10px;">Product Design</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CONTACT ======================== -->
+  <section id="contact" class="py-24 bg-surface">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <div class="section-divider mb-16"></div>
+
+      <div class="fade-up">
+        <span class="text-sm font-semibold text-violet-400 tracking-widest uppercase">Contact</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-white mt-2 mb-4">연락처</h2>
+        <p class="text-gray-400 mb-10">GitHub에서 프로젝트와 코드를 확인하세요.</p>
+
+        <a href="https://github.com/sgwei71" target="_blank"
+          class="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 via-violet-600 to-emerald-500 text-white font-semibold text-lg hover:opacity-90 transition-opacity shadow-xl shadow-violet-500/30">
+          <i class="fa-brands fa-github text-2xl"></i>
+          github.com/sgwei71
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer class="py-8 bg-base border-t border-gray-800 text-center text-gray-500 text-sm">
+    <p>© 2026 위성규 (Sunggyu Wi). IBK 기업은행 IT 아키텍트 / 부장.</p>
+  </footer>
+
+  <!-- ======================== JAVASCRIPT ======================== -->
+  <script>
+    // 네비게이션 스크롤 효과
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('nav-scrolled');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+      }
+    });
+
+    // 햄버거 메뉴 토글
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+
+    menuToggle.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        menuIcon.className = 'fa-solid fa-xmark text-xl';
+      } else {
+        mobileMenu.classList.add('hidden');
+        menuIcon.className = 'fa-solid fa-bars text-xl';
+      }
+    });
+
+    function closeMenu() {
+      mobileMenu.classList.add('hidden');
+      menuIcon.className = 'fa-solid fa-bars text-xl';
+    }
+
+    // 스크롤 애니메이션 (Intersection Observer)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
